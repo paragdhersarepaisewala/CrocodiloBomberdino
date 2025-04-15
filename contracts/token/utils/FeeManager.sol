@@ -14,9 +14,9 @@ abstract contract FeeManager {
     address public liquidityWallet;
 
     // Fee percentages (expressed as whole numbers, where 2 means 2%).
-    uint256 public burnFee = 2;        // 2% burn fee
-    uint256 public utilityFee = 2;     // 2% utility fee
-    uint256 public liquidityFee = 1;   // 1% auto-liquidity fee
+    uint256 public burnFee ;        // 2% burn fee
+    uint256 public utilityFee ;     // 2% utility fee
+    uint256 public liquidityFee ;   // 1% auto-liquidity fee
     // Total fee = 2 + 2 + 1 = 5%
 
     // Mapping for addresses exempt from fees.
@@ -25,7 +25,10 @@ abstract contract FeeManager {
     /**
      * @notice Returns the total fee percentage.
      */
-    function totalFee() public view returns (uint256) {
-        return burnFee + utilityFee + liquidityFee;
-    }
+function totalFee() public view returns (uint256) {
+    uint256 fee = burnFee + utilityFee + liquidityFee;
+    require(fee <= 10, "Total fee exceeds maximum allowed");
+    return fee;
+}
+
 }

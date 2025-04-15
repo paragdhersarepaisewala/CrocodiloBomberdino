@@ -200,6 +200,50 @@
 				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "bool",
+						"name": "exempt",
+						"type": "bool"
+					}
+				],
+				"name": "FeeExemptionUpdated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "burn",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "utility",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "liquidity",
+						"type": "address"
+					}
+				],
+				"name": "FeeWalletsUpdated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
 						"indexed": false,
 						"internalType": "uint64",
 						"name": "version",
@@ -609,6 +653,29 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256",
+						"name": "_burn",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_utility",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_liquidity",
+						"type": "uint256"
+					}
+				],
+				"name": "updateFees",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "address",
 						"name": "_burnWallet",
 						"type": "address"
@@ -809,7 +876,7 @@
 					"details": "Returns the number of decimals used to get its user representation. For example, if `decimals` equals `2`, a balance of `505` tokens should be displayed to a user as `5.05` (`505 / 10 ** 2`). Tokens usually opt for a value of 18, imitating the relationship between Ether and Wei. This is the default value returned by this function, unless it's overridden. NOTE: This information is only used for _display_ purposes: it in no way affects any of the arithmetic of the contract, including {IERC20-balanceOf} and {IERC20-transfer}."
 				},
 				"initialize()": {
-					"details": "Initializes the contract: sets token details, mints the total supply,      initializes fee wallet addresses (replace these with your secure addresses before mainnet deployment),      and exempts the deployer and the contract itself from fees."
+					"details": "Initializes the contract: sets token details, mints the total supply,      initializes fee wallet addresses and fee percentages,      and exempts the deployer and the contract itself from fees."
 				},
 				"name()": {
 					"details": "Returns the name of the token."
@@ -838,19 +905,6 @@
 				"transferOwnership(address)": {
 					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
 				},
-				"updateFeeExemption(address,bool)": {
-					"params": {
-						"account": "The address to update.",
-						"exempt": "Boolean flag indicating if the account should be fee-exempt."
-					}
-				},
-				"updateWallets(address,address,address)": {
-					"params": {
-						"_burnWallet": "New burn wallet address.",
-						"_liquidityWallet": "New liquidity wallet address.",
-						"_utilityWallet": "New utility wallet address."
-					}
-				},
 				"upgradeToAndCall(address,bytes)": {
 					"custom:oz-upgrades-unsafe-allow-reachable": "delegatecall",
 					"details": "Upgrade the implementation of the proxy to `newImplementation`, and subsequently execute the function call encoded in `data`. Calls {_authorizeUpgrade}. Emits an {Upgraded} event."
@@ -864,12 +918,6 @@
 			"methods": {
 				"totalFee()": {
 					"notice": "Returns the total fee percentage."
-				},
-				"updateFeeExemption(address,bool)": {
-					"notice": "Updates the fee exemption status for an account."
-				},
-				"updateWallets(address,address,address)": {
-					"notice": "Updates the fee wallet addresses."
 				}
 			},
 			"version": 1
@@ -892,11 +940,11 @@
 	},
 	"sources": {
 		"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol": {
-			"keccak256": "0x77b5db0459729eb68e45320a715ee280490bf11132a73a9b1b520acfab5cec9c",
+			"keccak256": "0xc163fcf9bb10138631a9ba5564df1fa25db9adff73bd9ee868a8ae1858fe093a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://9a22d0a284028864a39d89fc3383137eb08887948c4a7913b708d19b1fa542d2",
-				"dweb:/ipfs/Qmedc7f7yAzuGdHLMKEwngkVUD99mVecaMSYhABabSGMG7"
+				"bzz-raw://9706d43a0124053d9880f6e31a59f31bc0a6a3dc1acd66ce0a16e1111658c5f6",
+				"dweb:/ipfs/QmUFmfowzkRwGtDu36cXV9SPTBHJ3n7dG9xQiK5B28jTf2"
 			]
 		},
 		"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": {
@@ -955,12 +1003,28 @@
 				"dweb:/ipfs/QmbPZzgtT6LEm9CMqWfagQFwETbV1ztpECBB1DtQHrKiRz"
 			]
 		},
+		"@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol": {
+			"keccak256": "0xa3066ff86b94128a9d3956a63a0511fa1aae41bd455772ab587b32ff322acb2e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://bf7b192fd82acf6187970c80548f624b1b9c80425b62fa49e7fdb538a52de049",
+				"dweb:/ipfs/QmWXG1YCde1tqDYTbNwjkZDWVgPEjzaQGSDqWkyKLzaNua"
+			]
+		},
 		"@openzeppelin/contracts/proxy/ERC1967/ERC1967Utils.sol": {
 			"keccak256": "0x8decfa54cec979c824b044b8128cd91d713f72c71fd7dfa54974624d8c949898",
 			"license": "MIT",
 			"urls": [
 				"bzz-raw://271f914261a19d87117a777e0924ada545c16191ef9b00cc40b0134fc14ebc70",
 				"dweb:/ipfs/QmdvVNWHGHQrGGPonZJs5NuzTevTjZRM2zayKrDJf7WBA2"
+			]
+		},
+		"@openzeppelin/contracts/proxy/Proxy.sol": {
+			"keccak256": "0xc3f2ec76a3de8ed7a7007c46166f5550c72c7709e3fc7e8bb3111a7191cdedbd",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e73efb4c2ca655882dc237c6b4f234a9bd36d97159d8fcaa837eb01171f726ac",
+				"dweb:/ipfs/QmTNnnv7Gu5fs5G1ZMh7Fexp8N4XUs3XrNAngjcxgiss3e"
 			]
 		},
 		"@openzeppelin/contracts/proxy/beacon/IBeacon.sol": {
@@ -1012,19 +1076,19 @@
 			]
 		},
 		"contracts/token/CrocodiloBomberdino.sol": {
-			"keccak256": "0x827763dd6d606ea61807efdabe393b60b7231d1197603b0e79832e2f68806d4a",
+			"keccak256": "0x0e362ee9b43cc9591575607ffdfa07809a99c07dd8d8e9180f48f5da9bbab3a9",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://50f9de10afc113313314fe77046f7d987842fe66f63f183663d2b1c5526153dc",
-				"dweb:/ipfs/QmNd6kjTGtVAFuBBhVNTgfTXsTgU3Zx76Qnu15Mf3NgUcE"
+				"bzz-raw://5474593abc47b4ee249f0618a25be23e513bcdb1164124aaa5e46f150e371df4",
+				"dweb:/ipfs/Qmcz5BwdBgKggy7wRER4JpJMYtkd7BXEHSTpVFhd4X5oXn"
 			]
 		},
 		"contracts/token/utils/FeeManager.sol": {
-			"keccak256": "0x8173b57f206402d54f4713e3df944e38b293cf9713d0ed9c45c0550b2e2ad1f0",
+			"keccak256": "0xceaebb99664c84916a9b889b690f6e0073a790582f696b4828ca1811f6338652",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://35b9c14850802e3fedfaad60d3585a1b47637ceefd582cdbd367250b4a642734",
-				"dweb:/ipfs/QmWdyh8hwhpf2gBeXTmu3ZtGHhyoYWVy7JCRfn2hsLcivX"
+				"bzz-raw://47f82731c99c52ae1a7048e29445eeb9e2d09dea39bc158a25b0a0641280275f",
+				"dweb:/ipfs/QmQEf1sZw1MG5rE5x2N3JzzxshqSoaDECdP3WmLCsYFPMb"
 			]
 		}
 	},
